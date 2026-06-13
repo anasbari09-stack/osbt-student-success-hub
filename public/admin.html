@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - OSBT Student Success Hub</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+        <span>Student Success Hub</span>
+      </a>
+
+      <div class="nav-links desktop-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="request.html">Requests</a>
+        <a href="admin.html" aria-current="page">Admin</a>
+      </div>
+
+      <a class="assistant-button desktop-cta" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <aside class="mobile-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <a class="brand" href="index.html">
+          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+          <span>OSBT Hub</span>
+        </a>
+        <button class="close-button" type="button" aria-label="Close menu">Close</button>
+      </div>
+      <div class="drawer-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="request.html">Requests</a>
+        <a href="admin.html" aria-current="page">Admin</a>
+        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+      </div>
+    </aside>
+  </header>
+
+  <main class="page-main admin-page">
+    <section class="admin-hero">
+      <p class="eyebrow">School staff</p>
+      <h1>Admin Dashboard</h1>
+      <p>Manage student requests and follow school activity from one simple space.</p>
+    </section>
+
+    <section class="admin-stats-grid" aria-label="Dashboard stats">
+      <article class="stat-card">
+        <span>Total Requests</span>
+        <strong id="totalRequests">...</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Pending Requests</span>
+        <strong id="pendingRequests">...</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Upcoming Events</span>
+        <strong id="upcomingEvents">...</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Completed Requests</span>
+        <strong id="completedRequests">...</strong>
+      </article>
+    </section>
+
+    <section class="admin-dashboard-grid">
+      <section class="table-panel latest-requests-panel" aria-label="Latest requests">
+        <div class="section-heading">
+          <h2>Latest Requests</h2>
+          <p>A quick preview of the most recent student requests.</p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="latestRequestsBody">
+            <tr>
+              <td colspan="4">Loading requests...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="admin-events-panel" aria-label="Upcoming events preview">
+        <div class="section-heading">
+          <h2>Upcoming Events</h2>
+          <p>A short preview of the next school activities.</p>
+        </div>
+
+        <div class="admin-event-list" id="previewEventsList">
+          <article class="admin-state">
+            <p>Loading events...</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="table-panel admin-management-section" aria-label="Manage requests">
+      <div class="section-heading">
+        <h2>Manage Requests</h2>
+        <p>Review all student requests and update their status.</p>
+      </div>
+
+      <p class="admin-scroll-note">Scroll to view all requests.</p>
+
+      <div class="admin-scroll-area admin-requests-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Email</th>
+              <th>Category</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="manageRequestsBody">
+            <tr>
+              <td colspan="7">Loading requests...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-management-section admin-events-management" aria-label="Manage events">
+      <div class="section-heading">
+        <h2>Manage Events</h2>
+        <p>Add new events and remove events that should no longer appear.</p>
+      </div>
+
+      <div class="manage-events-layout">
+        <form id="addEventForm" class="admin-event-form">
+          <div class="form-row">
+            <label for="event-title">Title</label>
+            <input id="event-title" name="title" type="text" placeholder="Enter event title">
+            <p class="field-error" id="eventTitleError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="event-date">Date</label>
+            <input id="event-date" name="date" type="date">
+            <p class="field-error" id="eventDateError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="event-category">Category</label>
+            <select id="event-category" name="category">
+              <option value="">Select a category</option>
+              <option>Workshop</option>
+              <option>Exam</option>
+              <option>Announcement</option>
+              <option>Career</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="eventCategoryError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="event-description">Description</label>
+            <textarea id="event-description" name="description" rows="5" placeholder="Write a short event description"></textarea>
+            <p class="field-error" id="eventDescriptionError"></p>
+          </div>
+
+          <button class="button primary-button" id="addEventButton" type="submit">Add Event</button>
+
+          <div class="request-message-area" id="addEventMessage">
+            <p>Event form messages will appear here.</p>
+          </div>
+        </form>
+
+        <div>
+          <p class="admin-scroll-note">Scroll to view all events.</p>
+
+          <div class="admin-scroll-area admin-events-scroll">
+            <div class="admin-management-list" id="manageEventsList">
+              <article class="admin-state">
+                <p>Loading events...</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

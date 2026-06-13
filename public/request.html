@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requests - OSBT Student Success Hub</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+        <span>Student Success Hub</span>
+      </a>
+
+      <div class="nav-links desktop-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="request.html" aria-current="page">Requests</a>
+        <a href="admin.html">Admin</a>
+      </div>
+
+      <a class="assistant-button desktop-cta" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <aside class="mobile-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <a class="brand" href="index.html">
+          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+          <span>OSBT Hub</span>
+        </a>
+        <button class="close-button" type="button" aria-label="Close menu">Close</button>
+      </div>
+      <div class="drawer-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="request.html" aria-current="page">Requests</a>
+        <a href="admin.html">Admin</a>
+        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+      </div>
+    </aside>
+  </header>
+
+  <main class="page-main request-page">
+    <section class="request-hero">
+      <p class="eyebrow">Student help</p>
+      <h1>Submit a Student Request</h1>
+      <p>Send your question or request and keep it organized in one place.</p>
+    </section>
+
+    <section class="request-layout" aria-label="Student request area">
+      <section class="form-panel request-form-card" aria-label="Student request form">
+        <form id="requestForm">
+          <div class="form-row">
+            <label for="full-name">Full Name</label>
+            <input id="full-name" name="full-name" type="text" placeholder="Enter your full name">
+            <p class="field-error" id="fullNameError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Enter your email address">
+            <p class="field-error" id="emailError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="student-type">Student Type</label>
+            <select id="student-type" name="student-type">
+              <option value="">Select your student type</option>
+              <option>Candidate</option>
+              <option>Current Student</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="studentTypeError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+              <option value="">Select a category</option>
+              <option>Orientation</option>
+              <option>Admission</option>
+              <option>Event</option>
+              <option>Technical Problem</option>
+              <option>Other</option>
+            </select>
+            <p class="field-error" id="categoryError"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="7" placeholder="Write your request here"></textarea>
+            <p class="field-error" id="messageError"></p>
+          </div>
+
+          <button class="button primary-button" id="requestSubmitButton" type="submit">Send Request</button>
+
+          <div class="request-message-area" id="requestMessage" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside class="request-info-card">
+        <span class="support-icon">i</span>
+        <h2>Before you send</h2>
+        <p>Use this form for school questions, event help, orientation, or support requests.</p>
+        <p class="request-note">Your request will be saved and visible in the admin dashboard.</p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/request.js"></script>
+</body>
+</html>

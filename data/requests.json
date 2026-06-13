@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "fullName": "Amina Carter",
+    "email": "amina.carter@example.com",
+    "studentType": "Current Student",
+    "category": "Orientation",
+    "message": "I need help finding the next orientation session.",
+    "status": "pending",
+    "date": "June 10, 2026"
+  },
+  {
+    "id": 2,
+    "fullName": "Daniel Kim",
+    "email": "daniel.kim@example.com",
+    "studentType": "Candidate",
+    "category": "Event",
+    "message": "Can candidates attend the career pathways session?",
+    "status": "done",
+    "date": "June 9, 2026"
+  },
+  {
+    "id": 3,
+    "fullName": "Sophia Nguyen",
+    "email": "sophia.nguyen@example.com",
+    "studentType": "Current Student",
+    "category": "Admission",
+    "message": "I have a question about my admission documents.",
+    "status": "pending",
+    "date": "June 8, 2026"
+  },
+  {
+    "id": 4,
+    "fullName": "Liam Smith",
+    "email": "liam.smith@example.com",
+    "studentType": "Current Student",
+    "category": "General",
+    "message": "I need assistance with my course registration.",
+    "status": "done",
+    "date": "June 7, 2026"
+  },
+  {
+    "id": 5,
+    "fullName": "anas",
+    "email": "anasbari09@gmail.com",
+    "studentType": "Current Student",
+    "category": "Technical Problem",
+    "message": "salamo alaykom i have issues",
+    "status": "done",
+    "createdAt": "2026-06-11T11:27:28.116Z"
+  },
+  {
+    "id": 6,
+    "fullName": "anas",
+    "email": "abdo@gmail.com",
+    "studentType": "Candidate",
+    "category": "Admission",
+    "message": "hello",
+    "status": "done",
+    "createdAt": "2026-06-11T13:35:38.540Z"
+  }
+]

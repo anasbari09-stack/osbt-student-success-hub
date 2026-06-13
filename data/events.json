@@ -1,0 +1,30 @@
+[
+  {
+    "id": 3,
+    "date": "June 30, 2026",
+    "category": "Exams",
+    "title": "Final Exam Reminder",
+    "description": "Review important exam preparation notes, schedule reminders, and support resources."
+  },
+  {
+    "id": 5,
+    "date": "July 12, 2026",
+    "category": "Workshops",
+    "title": "Time Management Workshop",
+    "description": "Learn effective time management strategies to balance your studies and personal life."
+  },
+  {
+    "id": 7,
+    "date": "July 28, 2026",
+    "category": "Exams",
+    "title": "Midterm Exam Preparation",
+    "description": "Get tips and resources to prepare for your midterm exams effectively."
+  },
+  {
+    "id": 8,
+    "date": "August 3, 2026",
+    "category": "Announcements",
+    "title": "New Student Resources",
+    "description": "Learn about new resources available to students for academic and personal support."
+  }
+]

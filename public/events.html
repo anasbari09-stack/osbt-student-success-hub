@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - OSBT Student Success Hub</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+        <span>Student Success Hub</span>
+      </a>
+
+      <div class="nav-links desktop-links">
+        <a href="index.html">Home</a>
+        <a href="events.html" aria-current="page">Events</a>
+        <a href="request.html">Requests</a>
+        <a href="admin.html">Admin</a>
+      </div>
+
+      <a class="assistant-button desktop-cta" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <aside class="mobile-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <a class="brand" href="index.html">
+          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+          <span>OSBT Hub</span>
+        </a>
+        <button class="close-button" type="button" aria-label="Close menu">Close</button>
+      </div>
+      <div class="drawer-links">
+        <a href="index.html">Home</a>
+        <a href="events.html" aria-current="page">Events</a>
+        <a href="request.html">Requests</a>
+        <a href="admin.html">Admin</a>
+        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+      </div>
+    </aside>
+  </header>
+
+  <main class="page-main events-page">
+    <section class="events-hero">
+      <p class="eyebrow">Campus calendar</p>
+      <h1>School Events &amp; Announcements</h1>
+      <p>Stay updated with workshops, deadlines, and student opportunities.</p>
+    </section>
+
+    <section class="event-filters" aria-label="Event filters">
+      <button class="is-active" type="button">All</button>
+      <button type="button">Workshops</button>
+      <button type="button">Exams</button>
+      <button type="button">Announcements</button>
+      <button type="button">Career</button>
+    </section>
+
+    <section class="events-grid" id="eventsList" aria-label="School events list">
+      <article class="events-state">
+        <p>Loading events...</p>
+      </article>
+    </section>
+  </main>
+
+  <div class="event-modal" id="eventModal" aria-hidden="true">
+    <div class="event-modal-card" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+      <button class="event-modal-close" id="eventModalClose" type="button" aria-label="Close event details">Close</button>
+      <p class="event-modal-date" id="eventModalDate"></p>
+      <span class="event-badge" id="eventModalCategory"></span>
+      <h2 id="eventModalTitle"></h2>
+      <p id="eventModalDescription"></p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/events.js"></script>
+</body>
+</html>
