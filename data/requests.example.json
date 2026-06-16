@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "fullName": "Demo Student",
+    "email": "demo@example.com",
+    "studentType": "Candidate",
+    "category": "General",
+    "message": "This is a demo request.",
+    "status": "pending",
+    "createdAt": "2026-01-01T10:00:00.000Z"
+  }
+]
