@@ -9,12 +9,38 @@ const manageEventsList = document.querySelector("#manageEventsList");
 const addEventForm = document.querySelector("#addEventForm");
 const addEventButton = document.querySelector("#addEventButton");
 const addEventMessage = document.querySelector("#addEventMessage");
+const logoutButtons = document.querySelectorAll(".js-logout-button");
 const eventFieldErrors = {
   title: document.querySelector("#eventTitleError"),
   date: document.querySelector("#eventDateError"),
   category: document.querySelector("#eventCategoryError"),
   description: document.querySelector("#eventDescriptionError")
 };
+
+async function checkAdminLogin() {
+  const response = await fetch("/api/admin/me");
+
+  if (response.status === 401) {
+    window.location.href = "/login.html";
+    return false;
+  }
+
+  if (!response.ok) {
+    throw new Error("Admin login could not be checked.");
+  }
+
+  return true;
+}
+
+async function logoutAdmin() {
+  try {
+    await fetch("/api/admin/logout", {
+      method: "POST"
+    });
+  } finally {
+    window.location.href = "/login.html";
+  }
+}
 
 function normalizeStatus(status) {
   return (status || "").toLowerCase();
@@ -284,6 +310,11 @@ async function loadRequests() {
   try {
     const response = await fetch("/api/requests");
 
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
+
     if (!response.ok) {
       throw new Error("Requests could not be loaded.");
     }
@@ -314,6 +345,11 @@ async function updateRequestStatus(requestId, status) {
     });
 
     const result = await response.json();
+
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
 
     if (!response.ok) {
       throw new Error(result.message || "Request status could not be updated.");
@@ -368,6 +404,11 @@ async function submitEvent(event) {
 
     const result = await response.json();
 
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
+
     if (!response.ok) {
       if (result.errors) {
         showEventFieldErrors(result.errors);
@@ -404,6 +445,11 @@ async function deleteEvent(eventId) {
 
     const result = await response.json();
 
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
+
     if (!response.ok) {
       throw new Error(result.message || "Event could not be deleted.");
     }
@@ -415,9 +461,23 @@ async function deleteEvent(eventId) {
   }
 }
 
+async function initAdminPage() {
+  try {
+    const isAdmin = await checkAdminLogin();
+
+    if (!isAdmin) {
+      return;
+    }
+
+    loadRequests();
+    loadEvents();
+  } catch (error) {
+    window.location.href = "/login.html";
+  }
+}
+
 if (latestRequestsBody && manageRequestsBody && previewEventsList && manageEventsList) {
-  loadRequests();
-  loadEvents();
+  initAdminPage();
 
   manageRequestsBody.addEventListener("click", function (event) {
     const button = event.target.closest(".admin-action-button");
@@ -443,3 +503,7 @@ if (latestRequestsBody && manageRequestsBody && previewEventsList && manageEvent
 if (addEventForm) {
   addEventForm.addEventListener("submit", submitEvent);
 }
+
+logoutButtons.forEach(function (button) {
+  button.addEventListener("click", logoutAdmin);
+});

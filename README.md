@@ -52,35 +52,35 @@ OSBT Student Success Hub provides one simple web experience where users can:
 
 ```text
 osbt-student-success-hub/
-├── data/
-│   ├── events.json
-│   ├── faqs.json
-│   └── requests.json
-├── public/
-│   ├── assets/
-│   │   ├── images/
-│   │   │   └── osbt-logo.png
-│   │   └── videos/
-│   │       └── hero-school.mp4
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   ├── admin.js
-│   │   ├── events.js
-│   │   ├── main.js
-│   │   └── request.js
-│   ├── admin.html
-│   ├── events.html
-│   ├── index.html
-│   └── request.html
-├── ai-context.md
-├── architecture.md
-├── decisions.md
-├── learning-log.md
-├── package-lock.json
-├── package.json
-├── plan.md
-└── server.js
+|-- data/
+|   |-- events.json
+|   |-- faqs.json
+|   `-- requests.json
+|-- public/
+|   |-- assets/
+|   |   |-- images/
+|   |   |   `-- osbt-logo.png
+|   |   `-- videos/
+|   |       `-- hero-school.mp4
+|   |-- css/
+|   |   `-- style.css
+|   |-- js/
+|   |   |-- admin.js
+|   |   |-- events.js
+|   |   |-- main.js
+|   |   `-- request.js
+|   |-- admin.html
+|   |-- events.html
+|   |-- index.html
+|   `-- request.html
+|-- ai-context.md
+|-- architecture.md
+|-- decisions.md
+|-- learning-log.md
+|-- package-lock.json
+|-- package.json
+|-- plan.md
+`-- server.js
 ```
 
 ## API Routes

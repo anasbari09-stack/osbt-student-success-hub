@@ -1,15 +1,30 @@
 const express = require('express');
+const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
+const { initDatabase } = require('./db/database');
+require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+initDatabase();
 
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse JSON bodies
 app.use(express.json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'change_this_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax'
+  }
+}));
 
 app.use((error, req, res, next) => {
   if (req.path.startsWith('/api')) {
@@ -67,6 +82,18 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.isAdmin) {
+    next();
+    return;
+  }
+
+  res.status(401).json({
+    success: false,
+    message: 'Admin login required.'
+  });
+}
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -74,11 +101,72 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.post('/api/admin/login', (req, res) => {
+  const body = req.body || {};
+  const username = (body.username || '').trim();
+  const password = body.password || '';
+  const adminUsername = process.env.ADMIN_USERNAME;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminUsername || !adminPassword) {
+    res.status(500).json({
+      success: false,
+      message: 'Admin login is not configured.'
+    });
+    return;
+  }
+
+  if (username !== adminUsername || password !== adminPassword) {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid username or password.'
+    });
+    return;
+  }
+
+  req.session.isAdmin = true;
+
+  res.json({
+    success: true
+  });
+});
+
+app.post('/api/admin/logout', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Could not log out.'
+      });
+      return;
+    }
+
+    res.clearCookie('connect.sid');
+    res.json({
+      success: true
+    });
+  });
+});
+
+app.get('/api/admin/me', (req, res) => {
+  if (req.session && req.session.isAdmin) {
+    res.json({
+      isAdmin: true
+    });
+    return;
+  }
+
+  res.status(401).json({
+    success: false,
+    message: 'Admin login required.'
+  });
+});
+
 app.get('/api/events', (req, res) => {
   readJsonFile('events.json', res);
 });
 
-app.post('/api/events', (req, res) => {
+app.post('/api/events', requireAdmin, (req, res) => {
   const title = (req.body.title || '').trim();
   const date = (req.body.date || '').trim();
   const category = (req.body.category || '').trim();
@@ -150,7 +238,7 @@ app.post('/api/events', (req, res) => {
   });
 });
 
-app.delete('/api/events/:id', (req, res) => {
+app.delete('/api/events/:id', requireAdmin, (req, res) => {
   const eventId = Number(req.params.id);
 
   readJsonData('events.json', (readError, events, filePath) => {
@@ -191,7 +279,7 @@ app.delete('/api/events/:id', (req, res) => {
   });
 });
 
-app.get('/api/requests', (req, res) => {
+app.get('/api/requests', requireAdmin, (req, res) => {
   readJsonFile('requests.json', res);
 });
 
@@ -274,7 +362,7 @@ app.post('/api/requests', (req, res) => {
   });
 });
 
-app.patch('/api/requests/:id/status', (req, res) => {
+app.patch('/api/requests/:id/status', requireAdmin, (req, res) => {
   const requestId = Number(req.params.id);
   const status = (req.body.status || '').trim().toLowerCase();
   const allowedStatuses = ['pending', 'done'];

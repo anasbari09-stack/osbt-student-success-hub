@@ -112,13 +112,119 @@ When generating code:
 
 ## Last completed step
 
-Final polish - AI Assistant links connected
+Simple secure admin login added
 
 ## Next step
 
-README and presentation preparation
+Final security/manual test
+
+## Latest update - Admin login
+
+Admin login was added for the MVP.
+
+What changed:
+
+* Added environment-based admin credentials with `dotenv`
+* Added session login with `express-session`
+* Added `public/login.html`
+* Added `public/js/login.js`
+* Added `.env.example`
+* Confirmed `.env` is ignored by Git
+* Added Logout button to `public/admin.html`
+* Added frontend admin session check in `public/js/admin.js`
+
+Protected admin-only routes:
+
+* `GET /api/requests`
+* `PATCH /api/requests/:id/status`
+* `POST /api/events`
+* `DELETE /api/events/:id`
+
+Public routes kept public:
+
+* `GET /api/events`
+* `POST /api/requests`
+* `GET /api/faqs`
+
+Files changed:
+
+* `server.js`
+* `package.json`
+* `package-lock.json`
+* `.env.example`
+* `public/login.html`
+* `public/js/login.js`
+* `public/admin.html`
+* `public/js/admin.js`
+* `public/css/style.css`
+* `ai-context.md`
+
+Test checklist:
+
+* Visit `/admin.html` while logged out and confirm redirect to `/login.html`
+* Try a wrong admin username/password and confirm an error message appears
+* Add real values in `.env`, restart the server, and log in successfully
+* Confirm `/admin.html` loads requests/events after login
+* Confirm Logout redirects to `/login.html`
+* Confirm protected admin API routes return `401` when logged out
+* Confirm public routes still work while logged out
+
+Next step:
+
+* Final security/manual test
 
 ## Planned steps
 
 * Phase 2 Step 2.7 - Admin add events
 * Phase 2 Step 2.8 - Optional delete events
+
+## Latest update - SQLite database foundation
+
+SQLite database foundation was added for the auth/database upgrade.
+
+What changed:
+
+* Added `better-sqlite3`
+* Added `bcryptjs`
+* Added `db/database.js`
+* Added startup database initialization in `server.js`
+* Added `data/app.db` as the SQLite database file
+* Added `.env.example` entries for:
+
+  * `ADMIN_EMAIL`
+  * `ADMIN_PASSWORD`
+  * `ADMIN_NAME`
+  * `SESSION_SECRET`
+* Added `data/app.db` to `.gitignore`
+
+Tables created if missing:
+
+* `users`
+* `events`
+* `requests`
+* `faqs`
+
+Admin seed behavior:
+
+* Admin user is seeded from `.env`
+* Required values are `ADMIN_EMAIL` and `ADMIN_PASSWORD`
+* `ADMIN_NAME` defaults to `School Admin` if missing
+* Admin password is hashed with `bcryptjs`
+* If `ADMIN_EMAIL` or `ADMIN_PASSWORD` is missing, the app does not crash
+* Missing admin seed values log:
+
+  * `Admin seed skipped: ADMIN_EMAIL or ADMIN_PASSWORD missing.`
+
+Files changed:
+
+* `server.js`
+* `package.json`
+* `package-lock.json`
+* `.env.example`
+* `.gitignore`
+* `db/database.js`
+* `ai-context.md`
+
+Next step:
+
+* Register/login API routes
