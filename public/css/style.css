@@ -342,6 +342,7 @@ a {
   z-index: 3;
   max-width: 650px;
   margin-left: max(24px, calc((100vw - 1120px) / 2));
+  padding-top: 16px;
 }
 
 .eyebrow {
@@ -356,9 +357,21 @@ a {
 .hero h1,
 .page-intro h1 {
   color: #08284d;
+  font-weight: 900;
+  margin-bottom: 22px;
+  letter-spacing: 0;
+}
+
+.hero h1 {
+  max-width: 720px;
+  font-size: clamp(2.75rem, 5.2vw, 4.75rem);
+  line-height: 0.98;
+  margin-bottom: 20px;
+}
+
+.page-intro h1 {
   font-size: clamp(2.65rem, 6vw, 5.35rem);
   line-height: 1;
-  margin-bottom: 22px;
 }
 
 .accent-blue {
@@ -371,15 +384,19 @@ a {
 
 .hero p {
   max-width: 570px;
+  margin-bottom: 0;
   color: #2d4866;
   font-size: 1.18rem;
+  font-weight: 500;
+  line-height: 1.65;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
-  margin-top: 32px;
+  margin-top: 26px;
 }
 
 .button {
@@ -1556,6 +1573,22 @@ td {
 
   .hero-content {
     margin-left: 0;
+    max-width: 620px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.45rem, 9.5vw, 3.7rem);
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+
+  .hero p {
+    max-width: 540px;
+    line-height: 1.55;
+  }
+
+  .hero-actions {
+    margin-top: 24px;
   }
 
   .hero-actions,
@@ -1719,12 +1752,17 @@ td {
     max-width: 135px;
   }
 
-  .hero h1,
   .page-intro h1,
   .events-hero h1,
   .request-hero h1,
   .admin-hero h1 {
     font-size: clamp(2.35rem, 14vw, 3.4rem);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.05rem, 10.5vw, 2.85rem);
+    line-height: 1.03;
+    margin-bottom: 16px;
   }
 
   .hero p,
