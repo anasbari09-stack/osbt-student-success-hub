@@ -119,6 +119,15 @@ The `.env` file contains secrets, `data/app.db` is the local SQLite database fil
 
 - Move events and requests fully from JSON storage to SQLite.
 - Add search and filters in the admin dashboard.
+- Add a future student community page where students can publish posts.
+- Allow students to ask for help, share opportunities, and communicate with each other.
+- Add student groups by topic or program, such as internships, exams, programming, business, and events.
+- Add comments or replies on posts.
+- Add a simple chat or discussion system later.
+- Add admin moderation for posts, groups, and inappropriate content.
+- Add a report system so students can report bad posts.
 - Add automated tests.
 - Add charts or CSV export later.
 - Add advanced AI/RAG features later.
+
+These community features are future ideas only and are not part of the current implemented version.
