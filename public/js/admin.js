@@ -9,7 +9,6 @@ const manageEventsList = document.querySelector("#manageEventsList");
 const addEventForm = document.querySelector("#addEventForm");
 const addEventButton = document.querySelector("#addEventButton");
 const addEventMessage = document.querySelector("#addEventMessage");
-const logoutButtons = document.querySelectorAll(".js-logout-button");
 const eventFieldErrors = {
   title: document.querySelector("#eventTitleError"),
   date: document.querySelector("#eventDateError"),
@@ -20,26 +19,19 @@ const eventFieldErrors = {
 async function checkAdminLogin() {
   const response = await fetch("/api/admin/me");
 
-  if (response.status === 401) {
-    window.location.href = "/login.html";
+  if (response.ok) {
+    return true;
+  }
+
+  const authResponse = await fetch("/api/auth/me");
+
+  if (authResponse.ok) {
+    window.location.href = "/index.html";
     return false;
   }
 
-  if (!response.ok) {
-    throw new Error("Admin login could not be checked.");
-  }
-
-  return true;
-}
-
-async function logoutAdmin() {
-  try {
-    await fetch("/api/admin/logout", {
-      method: "POST"
-    });
-  } finally {
-    window.location.href = "/login.html";
-  }
+  window.location.href = "/login.html";
+  return false;
 }
 
 function normalizeStatus(status) {
@@ -47,7 +39,7 @@ function normalizeStatus(status) {
 }
 
 function getStatusLabel(status) {
-  return normalizeStatus(status) === "done" ? "Done" : "Pending";
+  return normalizeStatus(status) === "done" ? "Terminé" : "En attente";
 }
 
 function escapeHTML(value) {
@@ -67,10 +59,10 @@ function getRequestDate(request) {
   const date = new Date(request.createdAt);
 
   if (Number.isNaN(date.getTime())) {
-    return "No date";
+    return "Aucune date";
   }
 
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("fr-FR", {
     month: "long",
     day: "numeric",
     year: "numeric"
@@ -81,10 +73,10 @@ function getShortDate(dateText) {
   const date = new Date(dateText);
 
   if (Number.isNaN(date.getTime())) {
-    return dateText || "No date";
+    return dateText || "Aucune date";
   }
 
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("fr-FR", {
     month: "short",
     day: "numeric"
   });
@@ -156,6 +148,22 @@ function showEventMessage(message, type) {
   showAddEventMessage(message, type);
 }
 
+function translateAdminMessage(message) {
+  const messages = {
+    "Title is required": "Le titre est obligatoire",
+    "Date is required": "La date est obligatoire",
+    "Category is required": "La catégorie est obligatoire",
+    "Description is required": "La description est obligatoire",
+    "Status must be pending or done.": "Le statut doit être en attente ou terminé.",
+    "Request not found.": "Demande introuvable.",
+    "Event not found.": "Événement introuvable.",
+    "Could not delete event.": "L'événement n'a pas pu être supprimé.",
+    "Event deleted successfully.": "L'événement a été supprimé avec succès."
+  };
+
+  return messages[message] || message;
+}
+
 function clearEventFieldErrors() {
   Object.values(eventFieldErrors).forEach(function (errorElement) {
     errorElement.textContent = "";
@@ -165,7 +173,7 @@ function clearEventFieldErrors() {
 function showEventFieldErrors(errors) {
   Object.keys(errors).forEach(function (fieldName) {
     if (eventFieldErrors[fieldName]) {
-      eventFieldErrors[fieldName].textContent = errors[fieldName];
+      eventFieldErrors[fieldName].textContent = translateAdminMessage(errors[fieldName]);
     }
   });
 }
@@ -195,7 +203,7 @@ function setRequestStats(requests) {
 
 function renderPreviewRequests(requests) {
   if (!requests.length) {
-    showPreviewRequestsState("No requests are available right now.");
+    showPreviewRequestsState("Aucune demande n'est disponible pour le moment.");
     return;
   }
 
@@ -222,7 +230,7 @@ function renderPreviewRequests(requests) {
 
 function renderManageRequests(requests) {
   if (!requests.length) {
-    showManageRequestsState("No requests are available right now.");
+    showManageRequestsState("Aucune demande n'est disponible pour le moment.");
     return;
   }
 
@@ -230,12 +238,12 @@ function renderManageRequests(requests) {
     const status = normalizeStatus(request.status);
     const statusClass = status === "done" ? "done" : "pending";
     const nextStatus = status === "done" ? "pending" : "done";
-    const actionText = status === "done" ? "Mark Pending" : "Mark Done";
+    const actionText = status === "done" ? "Marquer en attente" : "Marquer terminé";
 
     return `
       <tr>
         <td>${escapeHTML(request.fullName)}</td>
-        <td>${escapeHTML(request.email || "No email")}</td>
+        <td>${escapeHTML(request.email || "Aucun email")}</td>
         <td>${escapeHTML(request.category)}</td>
         <td class="message-preview">${escapeHTML(getMessagePreview(request.message))}</td>
         <td><span class="status-pill ${statusClass}">${getStatusLabel(request.status)}</span></td>
@@ -256,7 +264,7 @@ function setEventStats(events) {
 
 function renderPreviewEvents(events) {
   if (!events.length) {
-    showPreviewEventsState("No upcoming events are available right now.");
+    showPreviewEventsState("Aucun événement à venir n'est disponible pour le moment.");
     return;
   }
 
@@ -282,7 +290,7 @@ function renderPreviewEvents(events) {
 
 function renderManageEvents(events) {
   if (!events.length) {
-    showManageEventsState("No events are available right now.");
+    showManageEventsState("Aucun événement n'est disponible pour le moment.");
     return;
   }
 
@@ -295,7 +303,7 @@ function renderManageEvents(events) {
           <h3>${escapeHTML(eventItem.title)}</h3>
           <p>${escapeHTML(eventItem.description)}</p>
           <button class="admin-delete-button" type="button" data-event-id="${eventItem.id}">
-            Delete
+            Supprimer
           </button>
         </div>
       </article>
@@ -304,8 +312,8 @@ function renderManageEvents(events) {
 }
 
 async function loadRequests() {
-  showPreviewRequestsState("Loading requests...");
-  showManageRequestsState("Loading requests...");
+  showPreviewRequestsState("Chargement des demandes...");
+  showManageRequestsState("Chargement des demandes...");
 
   try {
     const response = await fetch("/api/requests");
@@ -315,8 +323,13 @@ async function loadRequests() {
       return;
     }
 
+    if (response.status === 403) {
+      window.location.href = "/index.html";
+      return;
+    }
+
     if (!response.ok) {
-      throw new Error("Requests could not be loaded.");
+      throw new Error("Les demandes n'ont pas pu être chargées.");
     }
 
     const requests = await response.json();
@@ -327,13 +340,13 @@ async function loadRequests() {
     totalRequestsNumber.textContent = "!";
     pendingRequestsNumber.textContent = "!";
     completedRequestsNumber.textContent = "!";
-    showPreviewRequestsState("Requests could not be loaded.");
-    showManageRequestsState("Requests could not be loaded. Please try again later.");
+    showPreviewRequestsState("Les demandes n'ont pas pu être chargées.");
+    showManageRequestsState("Les demandes n'ont pas pu être chargées. Veuillez réessayer plus tard.");
   }
 }
 
 async function updateRequestStatus(requestId, status) {
-  showManageRequestsState("Updating request status...");
+  showManageRequestsState("Mise à jour du statut de la demande...");
 
   try {
     const response = await fetch(`/api/requests/${requestId}/status`, {
@@ -351,8 +364,13 @@ async function updateRequestStatus(requestId, status) {
       return;
     }
 
+    if (response.status === 403) {
+      window.location.href = "/index.html";
+      return;
+    }
+
     if (!response.ok) {
-      throw new Error(result.message || "Request status could not be updated.");
+      throw new Error(translateAdminMessage(result.message) || "Le statut de la demande n'a pas pu être mis à jour.");
     }
 
     loadRequests();
@@ -362,14 +380,14 @@ async function updateRequestStatus(requestId, status) {
 }
 
 async function loadEvents() {
-  showPreviewEventsState("Loading events...");
-  showManageEventsState("Loading events...");
+  showPreviewEventsState("Chargement des événements...");
+  showManageEventsState("Chargement des événements...");
 
   try {
     const response = await fetch("/api/events");
 
     if (!response.ok) {
-      throw new Error("Events could not be loaded.");
+      throw new Error("Les événements n'ont pas pu être chargés.");
     }
 
     const events = await response.json();
@@ -378,8 +396,8 @@ async function loadEvents() {
     renderManageEvents(events);
   } catch (error) {
     upcomingEventsNumber.textContent = "!";
-    showPreviewEventsState("Events could not be loaded.");
-    showManageEventsState("Events could not be loaded. Please try again later.");
+    showPreviewEventsState("Les événements n'ont pas pu être chargés.");
+    showManageEventsState("Les événements n'ont pas pu être chargés. Veuillez réessayer plus tard.");
   }
 }
 
@@ -390,8 +408,8 @@ async function submitEvent(event) {
 
   clearEventFieldErrors();
   addEventButton.disabled = true;
-  addEventButton.textContent = "Adding...";
-  showAddEventMessage("Adding event...", "loading");
+  addEventButton.textContent = "Ajout...";
+  showAddEventMessage("Ajout de l'événement...", "loading");
 
   try {
     const response = await fetch("/api/events", {
@@ -409,34 +427,39 @@ async function submitEvent(event) {
       return;
     }
 
+    if (response.status === 403) {
+      window.location.href = "/index.html";
+      return;
+    }
+
     if (!response.ok) {
       if (result.errors) {
         showEventFieldErrors(result.errors);
       }
 
-      throw new Error(result.message || "Please fix the highlighted fields.");
+      throw new Error(translateAdminMessage(result.message) || "Veuillez corriger les champs indiqués.");
     }
 
     addEventForm.reset();
     clearEventFieldErrors();
-    showAddEventMessage("Event was added successfully.", "success");
+    showAddEventMessage("L'événement a été ajouté avec succès.", "success");
     loadEvents();
   } catch (error) {
     showAddEventMessage(error.message, "error");
   } finally {
     addEventButton.disabled = false;
-    addEventButton.textContent = "Add Event";
+    addEventButton.textContent = "Ajouter l'événement";
   }
 }
 
 async function deleteEvent(eventId) {
-  const shouldDelete = confirm("Delete this event?");
+  const shouldDelete = confirm("Supprimer cet événement ?");
 
   if (!shouldDelete) {
     return;
   }
 
-  showEventMessage("Deleting event...", "loading");
+  showEventMessage("Suppression de l'événement...", "loading");
 
   try {
     const response = await fetch(`/api/events/${eventId}`, {
@@ -451,10 +474,10 @@ async function deleteEvent(eventId) {
     }
 
     if (!response.ok) {
-      throw new Error(result.message || "Event could not be deleted.");
+      throw new Error(translateAdminMessage(result.message) || "L'événement n'a pas pu être supprimé.");
     }
 
-    showEventMessage("Event was deleted successfully.", "success");
+    showEventMessage("L'événement a été supprimé avec succès.", "success");
     loadEvents();
   } catch (error) {
     showEventMessage(error.message, "error");
@@ -503,7 +526,3 @@ if (latestRequestsBody && manageRequestsBody && previewEventsList && manageEvent
 if (addEventForm) {
   addEventForm.addEventListener("submit", submitEvent);
 }
-
-logoutButtons.forEach(function (button) {
-  button.addEventListener("click", logoutAdmin);
-});

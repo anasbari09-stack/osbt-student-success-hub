@@ -2,25 +2,25 @@
   {
     "id": 1,
     "category": "Admissions",
-    "question": "How do I start an admissions question?",
-    "answer": "Use the request page to prepare your question, then follow the official OSBT admissions process for final guidance."
+    "question": "Comment commencer une question d'admission ?",
+    "answer": "Utilisez la page Demandes pour préparer votre question, puis suivez le processus officiel d'admission OSBT pour la réponse finale."
   },
   {
     "id": 2,
-    "category": "Programs",
-    "question": "How can I learn about programs?",
-    "answer": "Start by identifying your goals, then ask a school advisor or official OSBT contact for current program details."
+    "category": "Programmes",
+    "question": "Comment obtenir des informations sur les programmes ?",
+    "answer": "Commencez par identifier vos objectifs, puis contactez un conseiller ou un canal officiel OSBT pour les détails à jour."
   },
   {
     "id": 3,
-    "category": "Events",
-    "question": "Where can I see upcoming events?",
-    "answer": "Use the Events page to view school activities. Real event data can be connected in a later frontend step."
+    "category": "Événements",
+    "question": "Où voir les événements à venir ?",
+    "answer": "Utilisez la page Événements pour voir les activités de l'école. Les données réelles pourront être connectées dans une prochaine étape frontend."
   },
   {
     "id": 4,
-    "category": "Student support",
-    "question": "What kind of help can I request?",
-    "answer": "You can prepare requests about orientation, admission, events, technical problems, or general school help."
+    "category": "Support étudiant",
+    "question": "Quel type d'aide puis-je demander ?",
+    "answer": "Vous pouvez préparer des demandes sur l'orientation, l'admission, les événements, les problèmes techniques ou l'aide générale."
   }
 ]

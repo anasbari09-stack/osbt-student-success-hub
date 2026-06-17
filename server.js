@@ -1,8 +1,9 @@
 const express = require('express');
 const session = require('express-session');
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
-const { initDatabase } = require('./db/database');
+const { initDatabase, getDb } = require('./db/database');
 require('dotenv').config();
 
 const app = express();
@@ -82,13 +83,51 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function requireAdmin(req, res, next) {
-  if (req.session && req.session.isAdmin) {
+function createSafeUser(user) {
+  return {
+    id: user.id,
+    fullName: user.full_name,
+    email: user.email,
+    role: user.role
+  };
+}
+
+function setSessionUser(req, user) {
+  const safeUser = createSafeUser(user);
+
+  req.session.user = safeUser;
+  req.session.isAdmin = safeUser.role === 'admin';
+
+  return safeUser;
+}
+
+function requireAuth(req, res, next) {
+  if (req.session && req.session.user) {
     next();
     return;
   }
 
   res.status(401).json({
+    success: false,
+    message: 'Login required.'
+  });
+}
+
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.user && req.session.user.role === 'admin') {
+    next();
+    return;
+  }
+
+  if (!req.session || !req.session.user) {
+    res.status(401).json({
+      success: false,
+      message: 'Login required.'
+    });
+    return;
+  }
+
+  res.status(403).json({
     success: false,
     message: 'Admin login required.'
   });
@@ -98,6 +137,136 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     message: 'OSBT Student Success Hub API is running.'
+  });
+});
+
+app.post('/api/auth/register', (req, res) => {
+  const body = req.body || {};
+  const fullName = (body.fullName || '').trim();
+  const email = (body.email || '').trim().toLowerCase();
+  const password = body.password || '';
+  const errors = {};
+
+  if (!fullName) {
+    errors.fullName = 'Full name is required.';
+  }
+
+  if (!email) {
+    errors.email = 'Email is required.';
+  } else if (!isValidEmail(email)) {
+    errors.email = 'Valid email is required.';
+  }
+
+  if (!password) {
+    errors.password = 'Password is required.';
+  }
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({
+      success: false,
+      errors
+    });
+    return;
+  }
+
+  const database = getDb();
+  const existingUser = database
+    .prepare('SELECT id FROM users WHERE email = ?')
+    .get(email);
+
+  if (existingUser) {
+    res.status(409).json({
+      success: false,
+      message: 'An account with this email already exists.'
+    });
+    return;
+  }
+
+  const passwordHash = bcrypt.hashSync(password, 12);
+  const createdAt = new Date().toISOString();
+
+  const result = database
+    .prepare(`
+      INSERT INTO users (full_name, email, password_hash, role, created_at)
+      VALUES (?, ?, ?, 'student', ?)
+    `)
+    .run(fullName, email, passwordHash, createdAt);
+
+  const createdUser = database
+    .prepare('SELECT id, full_name, email, role FROM users WHERE id = ?')
+    .get(result.lastInsertRowid);
+
+  const safeUser = setSessionUser(req, createdUser);
+
+  res.status(201).json({
+    success: true,
+    user: safeUser
+  });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const body = req.body || {};
+  const email = (body.email || '').trim().toLowerCase();
+  const password = body.password || '';
+  const errors = {};
+
+  if (!email) {
+    errors.email = 'Email is required.';
+  }
+
+  if (!password) {
+    errors.password = 'Password is required.';
+  }
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({
+      success: false,
+      errors
+    });
+    return;
+  }
+
+  const user = getDb()
+    .prepare('SELECT id, full_name, email, password_hash, role FROM users WHERE email = ?')
+    .get(email);
+
+  if (!user || !bcrypt.compareSync(password, user.password_hash)) {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid email or password.'
+    });
+    return;
+  }
+
+  const safeUser = setSessionUser(req, user);
+
+  res.json({
+    success: true,
+    user: safeUser
+  });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Could not log out.'
+      });
+      return;
+    }
+
+    res.clearCookie('connect.sid');
+    res.json({
+      success: true
+    });
+  });
+});
+
+app.get('/api/auth/me', requireAuth, (req, res) => {
+  res.json({
+    success: true,
+    user: req.session.user
   });
 });
 
@@ -124,10 +293,28 @@ app.post('/api/admin/login', (req, res) => {
     return;
   }
 
-  req.session.isAdmin = true;
+  const adminEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+  const adminUser = adminEmail
+    ? getDb()
+      .prepare('SELECT id, full_name, email, role FROM users WHERE email = ? AND role = ?')
+      .get(adminEmail, 'admin')
+    : null;
+
+  if (adminUser) {
+    setSessionUser(req, adminUser);
+  } else {
+    req.session.user = {
+      id: null,
+      fullName: username,
+      email: adminEmail || '',
+      role: 'admin'
+    };
+    req.session.isAdmin = true;
+  }
 
   res.json({
-    success: true
+    success: true,
+    user: req.session.user
   });
 });
 
@@ -149,9 +336,10 @@ app.post('/api/admin/logout', (req, res) => {
 });
 
 app.get('/api/admin/me', (req, res) => {
-  if (req.session && req.session.isAdmin) {
+  if (req.session && req.session.user && req.session.user.role === 'admin') {
     res.json({
-      isAdmin: true
+      isAdmin: true,
+      user: req.session.user
     });
     return;
   }

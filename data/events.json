@@ -1,30 +1,30 @@
 [
   {
     "id": 3,
-    "date": "June 30, 2026",
-    "category": "Exams",
-    "title": "Final Exam Reminder",
-    "description": "Review important exam preparation notes, schedule reminders, and support resources."
+    "date": "30 juin 2026",
+    "category": "Examens",
+    "title": "Rappel des examens finaux",
+    "description": "Consultez les notes importantes de préparation, les rappels de planning et les ressources de support."
   },
   {
     "id": 5,
-    "date": "July 12, 2026",
-    "category": "Workshops",
-    "title": "Time Management Workshop",
-    "description": "Learn effective time management strategies to balance your studies and personal life."
+    "date": "12 juillet 2026",
+    "category": "Ateliers",
+    "title": "Atelier de gestion du temps",
+    "description": "Découvrez des stratégies efficaces pour équilibrer vos études et votre vie personnelle."
   },
   {
     "id": 7,
-    "date": "July 28, 2026",
-    "category": "Exams",
-    "title": "Midterm Exam Preparation",
-    "description": "Get tips and resources to prepare for your midterm exams effectively."
+    "date": "28 juillet 2026",
+    "category": "Examens",
+    "title": "Préparation aux examens intermédiaires",
+    "description": "Obtenez des conseils et des ressources pour bien préparer vos examens intermédiaires."
   },
   {
     "id": 8,
-    "date": "August 3, 2026",
-    "category": "Announcements",
-    "title": "New Student Resources",
-    "description": "Learn about new resources available to students for academic and personal support."
+    "date": "3 août 2026",
+    "category": "Annonces",
+    "title": "Nouvelles ressources étudiantes",
+    "description": "Découvrez les nouvelles ressources disponibles pour le support académique et personnel."
   }
 ]

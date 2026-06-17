@@ -8,37 +8,56 @@ function showLoginMessage(message, type) {
   loginMessage.innerHTML = `<p>${message}</p>`;
 }
 
+function translateLoginMessage(message) {
+  const messages = {
+    "Invalid email or password.": "Email ou mot de passe invalide.",
+    "Email is required.": "L'email est obligatoire.",
+    "Password is required.": "Le mot de passe est obligatoire."
+  };
+
+  return messages[message] || message;
+}
+
+function getFirstError(errors) {
+  if (!errors) {
+    return "";
+  }
+
+  return Object.values(errors)[0] || "";
+}
+
 async function submitLogin(event) {
   event.preventDefault();
 
-  const username = loginForm.elements.username.value.trim();
+  const email = loginForm.elements.email.value.trim();
   const password = loginForm.elements.password.value;
 
   loginButton.disabled = true;
-  loginButton.textContent = "Logging in...";
-  showLoginMessage("Checking login...", "loading");
+  loginButton.textContent = "Connexion...";
+  showLoginMessage("Vérification de la connexion...", "loading");
 
   try {
-    const response = await fetch("/api/admin/login", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ email, password })
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.message || "Login failed.");
+      const errorMessage = result.message || getFirstError(result.errors);
+      throw new Error(translateLoginMessage(errorMessage) || "La connexion a échoué.");
     }
 
-    window.location.href = "/admin.html";
+    window.location.href = "/index.html";
   } catch (error) {
     showLoginMessage(error.message, "error");
   } finally {
     loginButton.disabled = false;
-    loginButton.textContent = "Login";
+    loginButton.textContent = "Se connecter";
   }
 }
 

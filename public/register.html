@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - Student Success Hub</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+  <header class="site-header auth-header">
+    <nav class="navbar auth-navbar">
+      <a class="brand" href="login.html">
+        <img src="assets/images/osbt-logo.png" alt="logo OSBT">
+        <span>Student Success Hub</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="page-main login-page">
+    <section class="login-panel form-panel" aria-labelledby="registerTitle">
+      <p class="eyebrow">Student Success Hub</p>
+      <h1 id="registerTitle">Créer un compte</h1>
+
+      <form id="registerForm">
+        <div class="form-row">
+          <label for="fullName">Nom complet</label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" required>
+        </div>
+
+        <div class="form-row">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+
+        <div class="form-row">
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" required>
+        </div>
+
+        <div class="form-row">
+          <label for="confirmPassword">Confirmer le mot de passe</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required>
+        </div>
+
+        <button class="button primary-button" id="registerButton" type="submit">S'inscrire</button>
+
+        <p class="auth-switch">Vous avez déjà un compte ? <a href="login.html">Se connecter</a></p>
+
+        <div class="request-message-area" id="registerMessage" aria-live="polite">
+          <p>Les messages d'inscription apparaîtront ici.</p>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Student Success Hub. Créé pour le support étudiant.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

@@ -38,42 +38,42 @@ const emptyMessage = document.querySelector(".faq-empty");
 const faqData = {
   admissions: [
     {
-      question: "How do I start an admissions question?",
-      answer: "Use the request page to prepare your question, then follow the official OSBT admissions process for final guidance."
+      question: "Comment commencer une question d'admission ?",
+      answer: "Utilisez la page Demandes pour préparer votre question, puis suivez le processus officiel d'admission OSBT pour la réponse finale."
     },
     {
-      question: "Where should I confirm requirements?",
-      answer: "Always confirm admissions requirements through official OSBT channels before making decisions."
+      question: "Où confirmer les conditions d'admission ?",
+      answer: "Confirmez toujours les conditions d'admission sur les canaux officiels d'OSBT avant de prendre une décision."
     }
   ],
   programs: [
     {
-      question: "How can I learn about programs?",
-      answer: "Start by identifying your goals, then ask a school advisor or official OSBT contact for current program details."
+      question: "Comment obtenir des informations sur les programmes ?",
+      answer: "Commencez par identifier vos objectifs, puis contactez un conseiller ou un canal officiel OSBT pour les détails à jour."
     },
     {
-      question: "Can this hub choose a program for me?",
-      answer: "No. This hub can help organize questions, but program decisions should come from official advising."
+      question: "Est-ce que cet espace peut choisir un programme pour moi ?",
+      answer: "Non. Cet espace peut vous aider à organiser vos questions, mais le choix d'un programme doit être confirmé par l'orientation officielle."
     }
   ],
   events: [
     {
-      question: "Where can I see upcoming events?",
-      answer: "Use the Events page to view placeholder school activities now. Real event data can be added in a later phase."
+      question: "Où voir les événements à venir ?",
+      answer: "Utilisez la page Événements pour voir les activités de l'école. Les données réelles pourront être ajoutées dans une prochaine étape."
     },
     {
-      question: "Can I ask about an event?",
-      answer: "Yes. Use Submit Request to prepare a question about event timing, location, or participation."
+      question: "Puis-je poser une question sur un événement ?",
+      answer: "Oui. Utilisez Envoyer une demande pour poser une question sur l'heure, le lieu ou la participation."
     }
   ],
   support: [
     {
-      question: "What kind of help can I request?",
-      answer: "You can prepare requests about academic support, events, student records, or general school help."
+      question: "Quel type d'aide puis-je demander ?",
+      answer: "Vous pouvez préparer des demandes sur le support académique, les événements, les dossiers étudiants ou l'aide générale."
     },
     {
-      question: "Is this connected to a real support system?",
-      answer: "Not yet. This is a frontend-only prototype, so no message is submitted to a backend."
+      question: "Est-ce connecté à un vrai système de support ?",
+      answer: "Pas encore complètement. Cette version garde une logique simple et évoluera vers un support plus complet."
     }
   ]
 };

@@ -41,14 +41,14 @@ function createEventCard(eventItem) {
       </div>
       <h2>${escapeHTML(eventItem.title)}</h2>
       <p>${escapeHTML(eventItem.description)}</p>
-      <button class="event-detail-button" type="button" data-event-id="${eventItem.id}">View details</button>
+      <button class="event-detail-button" type="button" data-event-id="${eventItem.id}">Voir les détails</button>
     </article>
   `;
 }
 
 function renderEvents(events) {
   if (!events.length) {
-    showEventsState("No events match this filter right now.");
+    showEventsState("Aucun événement ne correspond à ce filtre pour le moment.");
     return;
   }
 
@@ -57,13 +57,27 @@ function renderEvents(events) {
 
 function getFilteredEvents(filterName) {
   const normalizedFilter = normalizeCategory(filterName);
+  const categoryMap = {
+    tou: "all",
+    atelier: ["workshop", "atelier"],
+    examen: ["exam", "examen"],
+    annonce: ["announcement", "annonce"],
+    carrière: ["career", "carrière"]
+  };
+  const filterKey = categoryMap[normalizedFilter] || normalizedFilter;
 
-  if (normalizedFilter === "all") {
+  if (filterKey === "all") {
     return allEvents;
   }
 
   return allEvents.filter(function (eventItem) {
-    return normalizeCategory(eventItem.category) === normalizedFilter;
+    const eventCategory = normalizeCategory(eventItem.category);
+
+    if (Array.isArray(filterKey)) {
+      return filterKey.includes(eventCategory);
+    }
+
+    return eventCategory === filterKey;
   });
 }
 
@@ -128,20 +142,20 @@ function handleEscapeKey(event) {
 }
 
 async function loadEvents() {
-  showEventsState("Loading events...");
+  showEventsState("Chargement des événements...");
 
   try {
     const response = await fetch("/api/events");
 
     if (!response.ok) {
-      throw new Error("Events request failed.");
+      throw new Error("La demande des événements a échoué.");
     }
 
     const events = await response.json();
     allEvents = events;
     renderEvents(allEvents);
   } catch (error) {
-    showEventsState("Events could not be loaded. Please try again later.");
+    showEventsState("Les événements n'ont pas pu être chargés. Veuillez réessayer plus tard.");
   }
 }
 

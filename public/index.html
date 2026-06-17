@@ -1,29 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSBT Student Success Hub</title>
+  <title>Student Success Hub</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <nav class="navbar">
       <a class="brand" href="index.html">
-        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+        <img src="assets/images/osbt-logo.png" alt="logo OSBT">
         <span>Student Success Hub</span>
       </a>
 
       <div class="nav-links desktop-links">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="admin.html">Admin</a>
+        <a href="index.html" aria-current="page">Accueil</a>
+        <a href="events.html">Événements</a>
+        <a href="request.html">Demandes</a>
+        <a class="js-admin-link" href="admin.html" hidden>Administration</a>
       </div>
 
-      <a class="assistant-button desktop-cta" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+      <div class="admin-nav-actions desktop-cta">
+        <span class="user-pill js-user-name" hidden></span>
+        <button class="logout-button js-logout-button" type="button" hidden>Déconnexion</button>
+      </div>
 
-      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+      <button class="menu-button" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -33,17 +36,18 @@
     <aside class="mobile-drawer" aria-hidden="true">
       <div class="drawer-header">
         <a class="brand" href="index.html">
-          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
-          <span>OSBT Hub</span>
+          <img src="assets/images/osbt-logo.png" alt="logo OSBT">
+          <span>Student Success Hub</span>
         </a>
-        <button class="close-button" type="button" aria-label="Close menu">Close</button>
+        <button class="close-button" type="button" aria-label="Fermer le menu">Fermer</button>
       </div>
       <div class="drawer-links">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="admin.html">Admin</a>
-        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+        <a href="index.html" aria-current="page">Accueil</a>
+        <a href="events.html">Événements</a>
+        <a href="request.html">Demandes</a>
+        <a class="js-admin-link" href="admin.html" hidden>Administration</a>
+        <span class="user-pill js-user-name" hidden></span>
+        <button class="logout-button js-logout-button" type="button" hidden>Déconnexion</button>
       </div>
     </aside>
   </header>
@@ -56,109 +60,110 @@
       <div class="hero-overlay"></div>
 
       <div class="hero-content">
-        <p class="eyebrow">Modern school support</p>
+        <p class="eyebrow">Support scolaire moderne</p>
         <h1>
-          Your smart student hub for <span class="accent-blue">OSBT life</span>
+          Votre espace étudiant intelligent pour la <span class="accent-blue">vie à OSBT</span>
         </h1>
         <p>
-          Find answers, follow events, and submit requests from one modern student space.
+          Trouvez des réponses, suivez les événements et envoyez vos demandes depuis un seul espace moderne.
         </p>
         <div class="hero-actions">
-          <a class="button primary-button" href="events.html">Explore Events</a>
-          <a class="button secondary-button" href="request.html">Submit Request</a>
+          <a class="button primary-button" href="events.html">Voir les événements</a>
+          <a class="button secondary-button" href="request.html">Envoyer une demande</a>
         </div>
       </div>
     </section>
 
     <section class="home-section about-section">
       <div class="section-copy">
-        <p class="eyebrow">Student helper platform</p>
-        <h2>Built to support students, not replace the official website.</h2>
+        <p class="eyebrow">Plateforme d'aide aux étudiants</p>
+        <h2>Créée pour aider les étudiants, sans remplacer le site officiel.</h2>
         <p>
-          OSBT Student Success Hub is a focused student support space for quick guidance,
-          school updates, and request preparation. Official information and final decisions
-          still belong to OSBT's official channels.
+          Student Success Hub est un espace de support pour obtenir une première orientation,
+          suivre les nouvelles de l'école et préparer vos demandes. Les informations officielles et les décisions finales
+          restent toujours sur les canaux officiels d'OSBT.
         </p>
       </div>
     </section>
 
     <section class="home-section support-section">
       <div class="section-copy centered-copy">
-        <p class="eyebrow">What students can do</p>
-        <h2>Simple tools for everyday school life.</h2>
+        <p class="eyebrow">Ce que les étudiants peuvent faire</p>
+        <h2>Des outils simples pour la vie scolaire quotidienne.</h2>
       </div>
 
       <div class="support-grid">
         <article class="support-card">
           <span class="support-icon">?</span>
-          <h3>Quick answers</h3>
-          <p>Find clear starting points for common questions about school life and support.</p>
+          <h3>Réponses rapides</h3>
+          <p>Trouvez des premières réponses claires aux questions fréquentes sur la vie scolaire et le support.</p>
         </article>
 
         <article class="support-card">
           <span class="support-icon">E</span>
-          <h3>School events</h3>
-          <p>Follow workshops, announcements, and upcoming activities from one calm page.</p>
+          <h3>Événements de l'école</h3>
+          <p>Suivez les ateliers, annonces et activités à venir depuis une page simple.</p>
         </article>
 
         <article class="support-card">
           <span class="support-icon">R</span>
-          <h3>Student requests</h3>
-          <p>Prepare help requests with a clean form before future support workflows are added.</p>
+          <h3>Demandes étudiantes</h3>
+          <p>Préparez vos demandes d'aide avec un formulaire clair avant les prochains workflows de support.</p>
         </article>
       </div>
     </section>
 
-    <section class="home-section final-cta">
+    <section class="home-section final-cta" id="help">
       <div>
-        <p class="eyebrow">Next step</p>
-        <h2>Need more help?</h2>
+        <p class="eyebrow">Besoin d'aide</p>
+        <h2>Vous avez besoin de plus d'aide ?</h2>
       </div>
       <div class="cta-actions">
-        <a class="button primary-button" href="request.html">Submit a Request</a>
-        <a class="button secondary-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
+        <a class="button primary-button" href="request.html">Envoyer une demande</a>
+          <a class="button secondary-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Ouvrir l'assistant IA</a>
       </div>
     </section>
 
-    <section class="faq-widget" aria-label="Homepage help widget">
+    <section class="faq-widget" aria-label="Widget d'aide de la page d'accueil">
       <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-panel">
         <span>?</span>
-        Help
+        Aide
       </button>
 
       <div class="faq-panel" id="faq-panel" aria-hidden="true">
         <div class="faq-header">
           <div>
-            <p class="eyebrow">Student help</p>
-            <h2>How can we help?</h2>
+            <p class="eyebrow">Aide étudiante</p>
+            <h2>Comment pouvons-nous aider ?</h2>
           </div>
-          <button class="faq-close" type="button" aria-label="Close help panel">Close</button>
+          <button class="faq-close" type="button" aria-label="Fermer le panneau d'aide">Fermer</button>
         </div>
 
-        <div class="faq-categories" aria-label="Help categories">
+        <div class="faq-categories" aria-label="Catégories d'aide">
           <button type="button" data-category="admissions">Admissions</button>
-          <button type="button" data-category="programs">Programs</button>
-          <button type="button" data-category="events">Events</button>
-          <button type="button" data-category="support">Student support</button>
+          <button type="button" data-category="programs">Programmes</button>
+          <button type="button" data-category="events">Événements</button>
+          <button type="button" data-category="support">Support étudiant</button>
         </div>
 
         <div class="faq-content">
-          <p class="faq-empty">Choose a category to see example questions.</p>
+          <p class="faq-empty">Choisissez une catégorie pour voir des exemples de questions.</p>
           <div class="faq-questions"></div>
           <div class="faq-answer"></div>
         </div>
 
         <div class="faq-actions">
-          <a class="button primary-button" href="request.html">Submit Request</a>
-          <a class="button secondary-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open Full AI Assistant</a>
+          <a class="button primary-button" href="request.html">Envoyer une demande</a>
+          <a class="button secondary-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Ouvrir l'assistant IA</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+    <p>&copy; 2026 Student Success Hub. Créé pour le support étudiant.</p>
   </footer>
   <script src="js/main.js"></script>
+  <script src="js/auth-ui.js"></script>
 </body>
 </html>

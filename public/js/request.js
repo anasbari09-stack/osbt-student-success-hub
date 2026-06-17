@@ -15,6 +15,18 @@ function showRequestMessage(message, type) {
   requestMessage.innerHTML = `<p>${message}</p>`;
 }
 
+function translateRequestMessage(message) {
+  const messages = {
+    "Full name is required": "Le nom complet est obligatoire",
+    "Valid email is required": "Un email valide est obligatoire",
+    "Student type is required": "Le type d'étudiant est obligatoire",
+    "Category is required": "La catégorie est obligatoire",
+    "Message is required": "Le message est obligatoire"
+  };
+
+  return messages[message] || message;
+}
+
 function clearFieldErrors() {
   Object.values(fieldErrors).forEach(function (errorElement) {
     errorElement.textContent = "";
@@ -24,7 +36,7 @@ function clearFieldErrors() {
 function showFieldErrors(errors) {
   Object.keys(errors).forEach(function (fieldName) {
     if (fieldErrors[fieldName]) {
-      fieldErrors[fieldName].textContent = errors[fieldName];
+      fieldErrors[fieldName].textContent = translateRequestMessage(errors[fieldName]);
     }
   });
 }
@@ -46,8 +58,8 @@ async function submitRequest(event) {
 
   clearFieldErrors();
   requestSubmitButton.disabled = true;
-  requestSubmitButton.textContent = "Sending...";
-  showRequestMessage("Sending your request...", "loading");
+  requestSubmitButton.textContent = "Envoi...";
+  showRequestMessage("Envoi de votre demande...", "loading");
 
   try {
     const response = await fetch("/api/requests", {
@@ -61,7 +73,7 @@ async function submitRequest(event) {
     const contentType = response.headers.get("content-type") || "";
 
     if (!contentType.includes("application/json")) {
-      throw new Error("Server returned an unexpected response. Check POST /api/requests.");
+      throw new Error("Le serveur a retourné une réponse inattendue.");
     }
 
     const result = await response.json();
@@ -71,17 +83,17 @@ async function submitRequest(event) {
         showFieldErrors(result.errors);
       }
 
-      throw new Error(result.message || "Please fix the highlighted fields.");
+      throw new Error(translateRequestMessage(result.message) || "Veuillez corriger les champs indiqués.");
     }
 
     requestForm.reset();
     clearFieldErrors();
-    showRequestMessage("Your request was saved successfully.", "success");
+    showRequestMessage("Votre demande a été enregistrée avec succès.", "success");
   } catch (error) {
     showRequestMessage(error.message, "error");
   } finally {
     requestSubmitButton.disabled = false;
-    requestSubmitButton.textContent = "Send Request";
+    requestSubmitButton.textContent = "Envoyer la demande";
   }
 }
 

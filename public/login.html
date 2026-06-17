@@ -1,80 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - OSBT Student Success Hub</title>
+  <title>Connexion - Student Success Hub</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <header class="site-header">
-    <nav class="navbar">
-      <a class="brand" href="index.html">
-        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+<body class="auth-body">
+  <header class="site-header auth-header">
+    <nav class="navbar auth-navbar">
+      <a class="brand" href="login.html">
+        <img src="assets/images/osbt-logo.png" alt="logo OSBT">
         <span>Student Success Hub</span>
       </a>
-
-      <div class="nav-links desktop-links">
-        <a href="index.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="login.html" aria-current="page">Admin</a>
-      </div>
-
-      <a class="assistant-button desktop-cta" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
-
-      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
     </nav>
-
-    <aside class="mobile-drawer" aria-hidden="true">
-      <div class="drawer-header">
-        <a class="brand" href="index.html">
-          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
-          <span>OSBT Hub</span>
-        </a>
-        <button class="close-button" type="button" aria-label="Close menu">Close</button>
-      </div>
-      <div class="drawer-links">
-        <a href="index.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="login.html" aria-current="page">Admin</a>
-        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
-      </div>
-    </aside>
   </header>
 
   <main class="page-main login-page">
     <section class="login-panel form-panel" aria-labelledby="loginTitle">
-      <p class="eyebrow">School staff</p>
-      <h1 id="loginTitle">Admin Login</h1>
+      <p class="eyebrow">Student Success Hub</p>
+      <h1 id="loginTitle">Connexion</h1>
 
       <form id="loginForm">
         <div class="form-row">
-          <label for="username">Username</label>
-          <input id="username" name="username" type="text" autocomplete="username" required>
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
         </div>
 
         <div class="form-row">
-          <label for="password">Password</label>
+          <label for="password">Mot de passe</label>
           <input id="password" name="password" type="password" autocomplete="current-password" required>
         </div>
 
-        <button class="button primary-button" id="loginButton" type="submit">Login</button>
+        <button class="button primary-button" id="loginButton" type="submit">Se connecter</button>
+
+        <p class="auth-switch">Nouveau ici ? <a href="register.html">Créer un compte</a></p>
 
         <div class="request-message-area" id="loginMessage" aria-live="polite">
-          <p>Login messages will appear here.</p>
+          <p>Les messages de connexion apparaîtront ici.</p>
         </div>
       </form>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+    <p>&copy; 2026 Student Success Hub. Créé pour le support étudiant.</p>
   </footer>
   <script src="js/main.js"></script>
   <script src="js/login.js"></script>

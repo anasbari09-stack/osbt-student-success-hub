@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - OSBT Student Success Hub</title>
+  <title>Administration - Student Success Hub</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <nav class="navbar">
       <a class="brand" href="index.html">
-        <img src="assets/images/osbt-logo.png" alt="OSBT logo">
+        <img src="assets/images/osbt-logo.png" alt="logo OSBT">
         <span>Student Success Hub</span>
       </a>
 
       <div class="nav-links desktop-links">
-        <a href="index.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="admin.html" aria-current="page">Admin</a>
+        <a href="index.html">Accueil</a>
+        <a href="events.html">Événements</a>
+        <a href="request.html">Demandes</a>
+        <a class="js-admin-link" href="admin.html" aria-current="page" hidden>Administration</a>
       </div>
 
       <div class="admin-nav-actions desktop-cta">
-        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
-        <button class="logout-button js-logout-button" type="button">Logout</button>
+        <span class="user-pill js-user-name" hidden></span>
+        <button class="logout-button js-logout-button" type="button" hidden>Déconnexion</button>
       </div>
 
-      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+      <button class="menu-button" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -36,130 +36,130 @@
     <aside class="mobile-drawer" aria-hidden="true">
       <div class="drawer-header">
         <a class="brand" href="index.html">
-          <img src="assets/images/osbt-logo.png" alt="OSBT logo">
-          <span>OSBT Hub</span>
+          <img src="assets/images/osbt-logo.png" alt="logo OSBT">
+          <span>Student Success Hub</span>
         </a>
-        <button class="close-button" type="button" aria-label="Close menu">Close</button>
+        <button class="close-button" type="button" aria-label="Fermer le menu">Fermer</button>
       </div>
       <div class="drawer-links">
-        <a href="index.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="request.html">Requests</a>
-        <a href="admin.html" aria-current="page">Admin</a>
-        <a class="assistant-button" href="http://127.0.0.1:8000/" target="_blank" rel="noopener noreferrer">Open AI Assistant</a>
-        <button class="logout-button js-logout-button" type="button">Logout</button>
+        <a href="index.html">Accueil</a>
+        <a href="events.html">Événements</a>
+        <a href="request.html">Demandes</a>
+        <a class="js-admin-link" href="admin.html" aria-current="page" hidden>Administration</a>
+        <span class="user-pill js-user-name" hidden></span>
+        <button class="logout-button js-logout-button" type="button" hidden>Déconnexion</button>
       </div>
     </aside>
   </header>
 
   <main class="page-main admin-page">
     <section class="admin-hero">
-      <p class="eyebrow">School staff</p>
-      <h1>Admin Dashboard</h1>
-      <p>Manage student requests and follow school activity from one simple space.</p>
+      <p class="eyebrow">Équipe scolaire</p>
+      <h1>Tableau de bord admin</h1>
+      <p>Gérez les demandes étudiantes et suivez l'activité de l'école depuis un seul espace.</p>
     </section>
 
-    <section class="admin-stats-grid" aria-label="Dashboard stats">
+    <section class="admin-stats-grid" aria-label="Statistiques du tableau de bord">
       <article class="stat-card">
-        <span>Total Requests</span>
+        <span>Total des demandes</span>
         <strong id="totalRequests">...</strong>
       </article>
 
       <article class="stat-card">
-        <span>Pending Requests</span>
+        <span>Demandes en attente</span>
         <strong id="pendingRequests">...</strong>
       </article>
 
       <article class="stat-card">
-        <span>Upcoming Events</span>
+        <span>Événements à venir</span>
         <strong id="upcomingEvents">...</strong>
       </article>
 
       <article class="stat-card">
-        <span>Completed Requests</span>
+        <span>Demandes terminées</span>
         <strong id="completedRequests">...</strong>
       </article>
     </section>
 
     <section class="admin-dashboard-grid">
-      <section class="table-panel latest-requests-panel" aria-label="Latest requests">
+      <section class="table-panel latest-requests-panel" aria-label="Dernières demandes">
         <div class="section-heading">
-          <h2>Latest Requests</h2>
-          <p>A quick preview of the most recent student requests.</p>
+          <h2>Dernières demandes</h2>
+          <p>Un aperçu rapide des demandes étudiantes les plus récentes.</p>
         </div>
 
         <table>
           <thead>
             <tr>
-              <th>Student</th>
-              <th>Category</th>
-              <th>Status</th>
+              <th>Étudiant</th>
+              <th>Catégorie</th>
+              <th>Statut</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody id="latestRequestsBody">
             <tr>
-              <td colspan="4">Loading requests...</td>
+              <td colspan="4">Chargement des demandes...</td>
             </tr>
           </tbody>
         </table>
       </section>
 
-      <section class="admin-events-panel" aria-label="Upcoming events preview">
+      <section class="admin-events-panel" aria-label="Aperçu des événements à venir">
         <div class="section-heading">
-          <h2>Upcoming Events</h2>
-          <p>A short preview of the next school activities.</p>
+          <h2>Événements à venir</h2>
+          <p>Un court aperçu des prochaines activités de l'école.</p>
         </div>
 
         <div class="admin-event-list" id="previewEventsList">
           <article class="admin-state">
-            <p>Loading events...</p>
+            <p>Chargement des événements...</p>
           </article>
         </div>
       </section>
     </section>
 
-    <section class="table-panel admin-management-section" aria-label="Manage requests">
+    <section class="table-panel admin-management-section" aria-label="Gérer les demandes">
       <div class="section-heading">
-        <h2>Manage Requests</h2>
-        <p>Review all student requests and update their status.</p>
+        <h2>Gérer les demandes</h2>
+        <p>Consultez toutes les demandes étudiantes et mettez leur statut à jour.</p>
       </div>
 
-      <p class="admin-scroll-note">Scroll to view all requests.</p>
+      <p class="admin-scroll-note">Faites défiler pour voir toutes les demandes.</p>
 
       <div class="admin-scroll-area admin-requests-scroll">
         <table>
           <thead>
             <tr>
-              <th>Student</th>
-              <th>Email</th>
-              <th>Category</th>
+              <th>Étudiant</th>
+              <th>Adresse e-mail</th>
+              <th>Catégorie</th>
               <th>Message</th>
-              <th>Status</th>
+              <th>Statut</th>
               <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="manageRequestsBody">
             <tr>
-              <td colspan="7">Loading requests...</td>
+              <td colspan="7">Chargement des demandes...</td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="admin-management-section admin-events-management" aria-label="Manage events">
+    <section class="admin-management-section admin-events-management" aria-label="Gérer les événements">
       <div class="section-heading">
-        <h2>Manage Events</h2>
-        <p>Add new events and remove events that should no longer appear.</p>
+        <h2>Gérer les événements</h2>
+        <p>Ajoutez de nouveaux événements et supprimez ceux qui ne doivent plus apparaître.</p>
       </div>
 
       <div class="manage-events-layout">
         <form id="addEventForm" class="admin-event-form">
           <div class="form-row">
-            <label for="event-title">Title</label>
-            <input id="event-title" name="title" type="text" placeholder="Enter event title">
+            <label for="event-title">Titre</label>
+            <input id="event-title" name="title" type="text" placeholder="Entrez le titre de l'événement">
             <p class="field-error" id="eventTitleError"></p>
           </div>
 
@@ -170,38 +170,38 @@
           </div>
 
           <div class="form-row">
-            <label for="event-category">Category</label>
+            <label for="event-category">Catégorie</label>
             <select id="event-category" name="category">
-              <option value="">Select a category</option>
-              <option>Workshop</option>
-              <option>Exam</option>
-              <option>Announcement</option>
-              <option>Career</option>
-              <option>Other</option>
+              <option value="">Sélectionnez une catégorie</option>
+              <option>Atelier</option>
+              <option>Examen</option>
+              <option>Annonce</option>
+              <option>Carrière</option>
+              <option>Autre</option>
             </select>
             <p class="field-error" id="eventCategoryError"></p>
           </div>
 
           <div class="form-row">
             <label for="event-description">Description</label>
-            <textarea id="event-description" name="description" rows="5" placeholder="Write a short event description"></textarea>
+            <textarea id="event-description" name="description" rows="5" placeholder="Écrivez une courte description de l'événement"></textarea>
             <p class="field-error" id="eventDescriptionError"></p>
           </div>
 
-          <button class="button primary-button" id="addEventButton" type="submit">Add Event</button>
+          <button class="button primary-button" id="addEventButton" type="submit">Ajouter l'événement</button>
 
           <div class="request-message-area" id="addEventMessage">
-            <p>Event form messages will appear here.</p>
+            <p>Les messages du formulaire d'événement apparaîtront ici.</p>
           </div>
         </form>
 
         <div>
-          <p class="admin-scroll-note">Scroll to view all events.</p>
+          <p class="admin-scroll-note">Faites défiler pour voir tous les événements.</p>
 
           <div class="admin-scroll-area admin-events-scroll">
             <div class="admin-management-list" id="manageEventsList">
               <article class="admin-state">
-                <p>Loading events...</p>
+                <p>Chargement des événements...</p>
               </article>
             </div>
           </div>
@@ -211,9 +211,10 @@
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 OSBT Student Success Hub. Built for student support.</p>
+    <p>&copy; 2026 Student Success Hub. Créé pour le support étudiant.</p>
   </footer>
   <script src="js/main.js"></script>
+  <script src="js/auth-ui.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>
