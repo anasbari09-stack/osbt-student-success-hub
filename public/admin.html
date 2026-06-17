@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administration - Student Success Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -88,7 +89,7 @@
           <p>Un aperçu rapide des demandes étudiantes les plus récentes.</p>
         </div>
 
-        <table>
+        <table class="table table-hover align-middle">
           <thead>
             <tr>
               <th>Étudiant</th>
@@ -128,7 +129,7 @@
       <p class="admin-scroll-note">Faites défiler pour voir toutes les demandes.</p>
 
       <div class="admin-scroll-area admin-requests-scroll">
-        <table>
+        <table class="table table-hover align-middle">
           <thead>
             <tr>
               <th>Étudiant</th>
@@ -159,19 +160,19 @@
         <form id="addEventForm" class="admin-event-form">
           <div class="form-row">
             <label for="event-title">Titre</label>
-            <input id="event-title" name="title" type="text" placeholder="Entrez le titre de l'événement">
+            <input class="form-control" id="event-title" name="title" type="text" placeholder="Entrez le titre de l'événement">
             <p class="field-error" id="eventTitleError"></p>
           </div>
 
           <div class="form-row">
             <label for="event-date">Date</label>
-            <input id="event-date" name="date" type="date">
+            <input class="form-control" id="event-date" name="date" type="date">
             <p class="field-error" id="eventDateError"></p>
           </div>
 
           <div class="form-row">
             <label for="event-category">Catégorie</label>
-            <select id="event-category" name="category">
+            <select class="form-select" id="event-category" name="category">
               <option value="">Sélectionnez une catégorie</option>
               <option>Atelier</option>
               <option>Examen</option>
@@ -184,11 +185,11 @@
 
           <div class="form-row">
             <label for="event-description">Description</label>
-            <textarea id="event-description" name="description" rows="5" placeholder="Écrivez une courte description de l'événement"></textarea>
+            <textarea class="form-control" id="event-description" name="description" rows="5" placeholder="Écrivez une courte description de l'événement"></textarea>
             <p class="field-error" id="eventDescriptionError"></p>
           </div>
 
-          <button class="button primary-button" id="addEventButton" type="submit">Ajouter l'événement</button>
+          <button class="button primary-button btn" id="addEventButton" type="submit">Ajouter l'événement</button>
 
           <div class="request-message-area" id="addEventMessage">
             <p>Les messages du formulaire d'événement apparaîtront ici.</p>

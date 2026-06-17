@@ -1,102 +1,58 @@
-# OSBT Student Success Hub
+# Student Success Hub
 
-OSBT Student Success Hub is a modern student helper website for OSBT students and candidates. It gives users a simple place to find quick guidance, view events, submit support requests, and access the full AI Assistant app when they need more help.
+Student Success Hub is a student support web application for OSBT students and candidates. It helps students log in, view school events, submit support requests, and gives admins a dashboard to manage events and requests.
 
-## Project Overview
-
-This project is built as a lightweight student support hub, not a replacement for the official OSBT website. The current version combines a polished static frontend with a beginner-friendly Node.js and Express backend that serves API data from JSON files.
-
-The homepage uses a clean school-and-technology visual style with the OSBT logo, a hero video, student support cards, a local FAQ widget, and clear navigation to events, requests, admin tools, and the AI Assistant.
-
-## Problem
-
-Students and candidates often need quick answers about admissions, events, orientation, technical issues, or general school support. Without one clear starting point, they may spend extra time looking for information or figuring out where to ask for help.
-
-## Solution
-
-OSBT Student Success Hub provides one simple web experience where users can:
-
-- Read key support information.
-- Browse upcoming events.
-- Submit a help request.
-- Use a local FAQ widget for quick guidance.
-- Open the full AI Assistant app when deeper help is needed.
-- Give admins a foundation for managing requests and events.
-
-## Features
-
-- Responsive homepage with OSBT branding.
-- Glass-style navigation and mobile sidebar.
-- Hero video on the homepage.
-- About and value section.
-- Student support cards.
-- Local FAQ widget for MVP guidance.
-- Events page connected to JSON-backed API data.
-- Request page for student and candidate support requests.
-- Admin page foundation for viewing and managing requests and events.
-- Request status updates with `pending` and `done` states.
-- Event creation and deletion API routes.
-- Static files served from the `public/` folder.
-- JSON files used as simple MVP storage.
-
-## Tech Stack
+## Technologies Used
 
 - HTML
 - CSS
-- Vanilla JavaScript
+- Bootstrap
+- JavaScript
 - Node.js
-- Express
-- JSON file storage
+- Express.js
+- SQLite
 
-## Project Structure
+## Features
 
-```text
-osbt-student-success-hub/
-|-- data/
-|   |-- events.json
-|   |-- faqs.json
-|   `-- requests.json
-|-- public/
-|   |-- assets/
-|   |   |-- images/
-|   |   |   `-- osbt-logo.png
-|   |   `-- videos/
-|   |       `-- hero-school.mp4
-|   |-- css/
-|   |   `-- style.css
-|   |-- js/
-|   |   |-- admin.js
-|   |   |-- events.js
-|   |   |-- main.js
-|   |   `-- request.js
-|   |-- admin.html
-|   |-- events.html
-|   |-- index.html
-|   `-- request.html
-|-- ai-context.md
-|-- architecture.md
-|-- decisions.md
-|-- learning-log.md
-|-- package-lock.json
-|-- package.json
-|-- plan.md
-`-- server.js
-```
+- Student login/register
+- Student request submission
+- Events page
+- Admin dashboard
+- Role-based access with `student` and `admin`
+- Events CRUD
+- Requests management
+- Session-based authentication
 
-## API Routes
+## CRUD Explanation
 
-| Method | Route | Description |
-| --- | --- | --- |
-| GET | `/api/health` | Checks that the API is running. |
-| GET | `/api/events` | Returns all events from `data/events.json`. |
-| POST | `/api/events` | Adds a new event after validating title, date, category, and description. |
-| DELETE | `/api/events/:id` | Deletes an event by ID. |
-| GET | `/api/requests` | Returns all support requests from `data/requests.json`. |
-| POST | `/api/requests` | Adds a new support request after validating the form data. |
-| PATCH | `/api/requests/:id/status` | Updates a request status to `pending` or `done`. |
-| GET | `/api/faqs` | Returns FAQ items from `data/faqs.json`. |
+### Events
 
-## How to Run Locally
+Events are the main full CRUD resource in the admin dashboard.
+
+- Create: admin can add a new event.
+- Read: public users can view events on the Events page, and admins can list events in the dashboard.
+- Update: admin can edit event title, category, date, and description.
+- Delete: admin can delete events.
+
+### Requests
+
+Requests are used for student support.
+
+- Create: students can submit a request from the request page.
+- Read: admins can view submitted requests in the dashboard.
+- Update status: admins can mark requests as `pending` or `done`.
+
+## School Requirement Coverage
+
+This project satisfies the school requirement in two parts:
+
+- Frontend website: uses HTML, CSS, Bootstrap, and JavaScript.
+- Backend CRUD app: uses Node.js and Express.js for API routes.
+- Admin dashboard: acts as the CRUD management area for events and requests.
+
+Bootstrap is used lightly through CDN classes such as `form-control`, `form-select`, `btn`, and `table`, while the custom CSS keeps the main OSBT visual identity.
+
+## Setup Instructions
 
 1. Install dependencies:
 
@@ -104,13 +60,21 @@ osbt-student-success-hub/
 npm install
 ```
 
-2. Start the server:
+2. Create `.env` from `.env.example`:
+
+```bash
+copy .env.example .env
+```
+
+3. Update `.env` with your local admin and session values.
+
+4. Start the server:
 
 ```bash
 npm start
 ```
 
-3. Open the app in your browser:
+5. Open the app:
 
 ```text
 http://localhost:3000
@@ -118,30 +82,43 @@ http://localhost:3000
 
 Useful pages:
 
-- Homepage: `http://localhost:3000/`
+- Login: `http://localhost:3000/login.html`
+- Register: `http://localhost:3000/register.html`
+- Home: `http://localhost:3000/index.html`
 - Events: `http://localhost:3000/events.html`
 - Request form: `http://localhost:3000/request.html`
-- Admin page: `http://localhost:3000/admin.html`
+- Admin dashboard: `http://localhost:3000/admin.html`
 
-## What I Learned
+## Important Git Notes
 
-- How to structure a small full-stack project with a clear frontend and backend.
-- How to serve static files with Express.
-- How to build simple API routes for events, FAQs, and student requests.
-- How to use JSON files as MVP storage before adding a real database.
-- How to validate user input on backend routes.
-- How to keep a project simple, readable, and beginner-friendly while still making it useful.
-- How to document project decisions and future steps clearly.
+The following files should not be pushed to GitHub:
+
+- `.env`
+- `data/app.db`
+- `ai-context.md`
+
+The `.env` file contains secrets, `data/app.db` is the local SQLite database file, and `ai-context.md` is local AI/project context.
+
+## Main API Routes
+
+| Method | Route | Access | Purpose |
+| --- | --- | --- | --- |
+| `POST` | `/api/auth/register` | Public | Register a student account |
+| `POST` | `/api/auth/login` | Public | Login student/admin |
+| `POST` | `/api/auth/logout` | Logged in | Logout |
+| `GET` | `/api/auth/me` | Logged in | Get current session user |
+| `GET` | `/api/events` | Public | Read/list events |
+| `POST` | `/api/events` | Admin | Create event |
+| `PATCH` | `/api/events/:id` | Admin | Update event |
+| `DELETE` | `/api/events/:id` | Admin | Delete event |
+| `POST` | `/api/requests` | Student/Public form | Create support request |
+| `GET` | `/api/requests` | Admin | Read/list requests |
+| `PATCH` | `/api/requests/:id/status` | Admin | Update request status |
 
 ## Future Improvements
 
-- Add a real admin login system.
-- Replace JSON file storage with a database.
-- Improve admin tools for adding, editing, filtering, and deleting events.
-- Add better request management with search and filters.
-- Add charts or dashboard summaries for admins.
-- Add CSV export for requests.
-- Add multilingual support.
-- Connect advanced AI or RAG features later.
-- Improve accessibility testing and form feedback.
-- Add automated tests for API routes.
+- Move events and requests fully from JSON storage to SQLite.
+- Add search and filters in the admin dashboard.
+- Add automated tests.
+- Add charts or CSV export later.
+- Add advanced AI/RAG features later.

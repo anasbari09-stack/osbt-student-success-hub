@@ -426,6 +426,79 @@ app.post('/api/events', requireAdmin, (req, res) => {
   });
 });
 
+app.patch('/api/events/:id', requireAdmin, (req, res) => {
+  const eventId = Number(req.params.id);
+  const title = (req.body.title || '').trim();
+  const date = (req.body.date || '').trim();
+  const category = (req.body.category || '').trim();
+  const description = (req.body.description || '').trim();
+  const errors = {};
+
+  if (!title) {
+    errors.title = 'Title is required';
+  }
+
+  if (!date) {
+    errors.date = 'Date is required';
+  }
+
+  if (!category) {
+    errors.category = 'Category is required';
+  }
+
+  if (!description) {
+    errors.description = 'Description is required';
+  }
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({
+      success: false,
+      errors
+    });
+    return;
+  }
+
+  readJsonData('events.json', (readError, events, filePath) => {
+    if (readError) {
+      res.status(500).json({
+        success: false,
+        message: 'Could not read events data.'
+      });
+      return;
+    }
+
+    const eventItem = events.find((item) => item.id === eventId);
+
+    if (!eventItem) {
+      res.status(404).json({
+        success: false,
+        message: 'Event not found.'
+      });
+      return;
+    }
+
+    eventItem.title = title;
+    eventItem.date = date;
+    eventItem.category = category;
+    eventItem.description = description;
+
+    fs.writeFile(filePath, JSON.stringify(events, null, 2), (writeError) => {
+      if (writeError) {
+        res.status(500).json({
+          success: false,
+          message: 'Could not update event.'
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        event: eventItem
+      });
+    });
+  });
+});
+
 app.delete('/api/events/:id', requireAdmin, (req, res) => {
   const eventId = Number(req.params.id);
 

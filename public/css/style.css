@@ -1181,6 +1181,19 @@ a {
   text-transform: uppercase;
 }
 
+.admin-event-edit-form {
+  grid-column: 2;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .message-preview {
   max-width: 260px;
   color: #536b86;
@@ -1192,7 +1205,6 @@ a {
 
 .admin-delete-button {
   width: fit-content;
-  margin-top: 10px;
   border: 1px solid rgba(190, 64, 64, 0.25);
   border-radius: 999px;
   padding: 7px 12px;
@@ -1207,6 +1219,25 @@ a {
 
 .admin-delete-button:hover {
   border-color: rgba(190, 64, 64, 0.46);
+  transform: translateY(-1px);
+}
+
+.admin-edit-button {
+  width: fit-content;
+  border: 1px solid rgba(10, 111, 214, 0.25);
+  border-radius: 999px;
+  padding: 7px 12px;
+  color: #08284d;
+  background: rgba(10, 111, 214, 0.07);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-edit-button:hover {
+  border-color: rgba(10, 111, 214, 0.46);
   transform: translateY(-1px);
 }
 
@@ -1635,8 +1666,13 @@ td {
   }
 
   .admin-action-button,
+  .admin-edit-button,
   .admin-delete-button {
     width: 100%;
+  }
+
+  .admin-event-edit-form {
+    grid-column: 1 / -1;
   }
 
   .home-section {

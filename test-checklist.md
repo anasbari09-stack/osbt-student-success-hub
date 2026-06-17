@@ -181,3 +181,17 @@ Student users cannot access admin-only routes.
 Authentication API tests passed.
 Register, login, logout, session check, student role protection, and admin role access are working.
 ```
+
+## UI and CRUD Checklist
+
+- [ ] Bootstrap CSS loads correctly on the main pages.
+- [ ] Existing custom OSBT design still looks correct after adding Bootstrap classes.
+- [ ] Admin can create a new event.
+- [ ] Admin can view/list events in the dashboard.
+- [ ] Admin can edit an event title, category, date, and description.
+- [ ] Admin can delete an event.
+- [ ] Public/user Events page can view events.
+- [ ] Student user cannot access admin event create/edit/delete tools.
+- [ ] Student request submission still works.
+- [ ] Admin can still view requests.
+- [ ] Admin can still mark requests as pending/done.

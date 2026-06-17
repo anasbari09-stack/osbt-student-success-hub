@@ -102,6 +102,10 @@ function getMessagePreview(message) {
   return `${cleanMessage.slice(0, 70)}...`;
 }
 
+function isEventCategorySelected(eventItem, categoryNames) {
+  return categoryNames.includes(eventItem.category) ? "selected" : "";
+}
+
 function showPreviewRequestsState(message) {
   latestRequestsBody.innerHTML = `
     <tr>
@@ -158,6 +162,7 @@ function translateAdminMessage(message) {
     "Request not found.": "Demande introuvable.",
     "Event not found.": "Événement introuvable.",
     "Could not delete event.": "L'événement n'a pas pu être supprimé.",
+    "Could not update event.": "L'événement n'a pas pu être mis à jour.",
     "Event deleted successfully.": "L'événement a été supprimé avec succès."
   };
 
@@ -298,14 +303,47 @@ function renderManageEvents(events) {
     return `
       <article class="admin-event-row admin-event-manage-card">
         <span>${escapeHTML(getShortDate(eventItem.date))}</span>
-        <div>
+        <div class="admin-event-view">
           <p class="admin-event-category">${escapeHTML(eventItem.category)}</p>
           <h3>${escapeHTML(eventItem.title)}</h3>
           <p>${escapeHTML(eventItem.description)}</p>
-          <button class="admin-delete-button" type="button" data-event-id="${eventItem.id}">
-            Supprimer
-          </button>
+          <div class="admin-event-actions">
+            <button class="admin-edit-button btn" type="button" data-event-id="${eventItem.id}">
+              Modifier
+            </button>
+            <button class="admin-delete-button btn" type="button" data-event-id="${eventItem.id}">
+              Supprimer
+            </button>
+          </div>
         </div>
+        <form class="admin-event-edit-form" data-event-id="${eventItem.id}" hidden>
+          <div class="form-row">
+            <label for="edit-title-${eventItem.id}">Titre</label>
+            <input class="form-control" id="edit-title-${eventItem.id}" name="title" type="text" value="${escapeHTML(eventItem.title)}">
+          </div>
+          <div class="form-row">
+            <label for="edit-date-${eventItem.id}">Date</label>
+            <input class="form-control" id="edit-date-${eventItem.id}" name="date" type="text" value="${escapeHTML(eventItem.date)}">
+          </div>
+          <div class="form-row">
+            <label for="edit-category-${eventItem.id}">Catégorie</label>
+            <select class="form-select" id="edit-category-${eventItem.id}" name="category">
+              <option ${isEventCategorySelected(eventItem, ["Atelier", "Ateliers", "Workshop", "Workshops"])}>Atelier</option>
+              <option ${isEventCategorySelected(eventItem, ["Examen", "Examens", "Exam", "Exams"])}>Examen</option>
+              <option ${isEventCategorySelected(eventItem, ["Annonce", "Annonces", "Announcement", "Announcements"])}>Annonce</option>
+              <option ${isEventCategorySelected(eventItem, ["Carrière", "Career"])}>Carrière</option>
+              <option ${isEventCategorySelected(eventItem, ["Autre", "Other"])}>Autre</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="edit-description-${eventItem.id}">Description</label>
+            <textarea class="form-control" id="edit-description-${eventItem.id}" name="description" rows="4">${escapeHTML(eventItem.description)}</textarea>
+          </div>
+          <div class="admin-event-actions">
+            <button class="admin-edit-button btn" type="submit">Enregistrer</button>
+            <button class="admin-action-button btn admin-cancel-edit-button" type="button">Annuler</button>
+          </div>
+        </form>
       </article>
     `;
   }).join("");
@@ -452,6 +490,80 @@ async function submitEvent(event) {
   }
 }
 
+function showEditEventForm(button) {
+  const eventCard = button.closest(".admin-event-manage-card");
+  const view = eventCard.querySelector(".admin-event-view");
+  const form = eventCard.querySelector(".admin-event-edit-form");
+
+  view.setAttribute("hidden", "");
+  form.removeAttribute("hidden");
+}
+
+function hideEditEventForm(button) {
+  const eventCard = button.closest(".admin-event-manage-card");
+  const view = eventCard.querySelector(".admin-event-view");
+  const form = eventCard.querySelector(".admin-event-edit-form");
+
+  form.setAttribute("hidden", "");
+  view.removeAttribute("hidden");
+}
+
+function getEditEventFormData(form) {
+  return {
+    title: form.elements.title.value.trim(),
+    date: form.elements.date.value.trim(),
+    category: form.elements.category.value,
+    description: form.elements.description.value.trim()
+  };
+}
+
+async function updateEvent(event) {
+  event.preventDefault();
+
+  const form = event.target;
+  const eventId = Number(form.dataset.eventId);
+  const eventData = getEditEventFormData(form);
+  const saveButton = form.querySelector('button[type="submit"]');
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Enregistrement...";
+  showEventMessage("Mise à jour de l'événement...", "loading");
+
+  try {
+    const response = await fetch(`/api/events/${eventId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(eventData)
+    });
+
+    const result = await response.json();
+
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    if (response.status === 403) {
+      window.location.href = "/index.html";
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(translateAdminMessage(result.message) || "L'événement n'a pas pu être mis à jour.");
+    }
+
+    showEventMessage("L'événement a été mis à jour avec succès.", "success");
+    loadEvents();
+  } catch (error) {
+    showEventMessage(error.message, "error");
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = "Enregistrer";
+  }
+}
+
 async function deleteEvent(eventId) {
   const shouldDelete = confirm("Supprimer cet événement ?");
 
@@ -513,13 +625,33 @@ if (latestRequestsBody && manageRequestsBody && previewEventsList && manageEvent
   });
 
   manageEventsList.addEventListener("click", function (event) {
-    const button = event.target.closest(".admin-delete-button");
+    const editButton = event.target.closest(".admin-edit-button[data-event-id]");
+    const cancelButton = event.target.closest(".admin-cancel-edit-button");
+    const deleteButton = event.target.closest(".admin-delete-button");
 
-    if (!button) {
+    if (editButton) {
+      showEditEventForm(editButton);
       return;
     }
 
-    deleteEvent(Number(button.dataset.eventId));
+    if (cancelButton) {
+      hideEditEventForm(cancelButton);
+      return;
+    }
+
+    if (!deleteButton) {
+      return;
+    }
+
+    deleteEvent(Number(deleteButton.dataset.eventId));
+  });
+
+  manageEventsList.addEventListener("submit", function (event) {
+    if (!event.target.classList.contains("admin-event-edit-form")) {
+      return;
+    }
+
+    updateEvent(event);
   });
 }
 
